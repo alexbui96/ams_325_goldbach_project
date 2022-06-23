@@ -1,8 +1,11 @@
 # Function to generate prime numbers list up to n using sieve method
+from cProfile import label
+from re import T
+from numpy import block
 from sympy import elliptic_f
 
 
-def sieve(n):
+def sieve(n, print_console = True):
     # Create a n-element True array (tempurary prime list)
     prime_list_temp = [True for i in range(n+1)]
     
@@ -28,18 +31,21 @@ def sieve(n):
                 prime_list_temp[m] = False
     
     # Create prime number list based on True value in prime_list_temp
-    for k in range(n+1):
-        if prime_list_temp[k]:
-            prime_list.append(k)
-            
+    for prime in range(n+1):
+        if prime_list_temp[prime]:
+            prime_list.append(prime)
+            # Print prime numbers to the console
+            if print_console:
+                print(prime)
     return prime_list
 
 # Function to create a dictionary for Goldbach's conjecture
 # The keys are even numbers up to n
 # Their corresponding values are Goldbach pairs
-def strong_goldbach_dict(n):
+def strong_goldbach_pair(n, print_console = True):
     # Create a prime list up to n
-    prime_list = sieve(n)
+    prime_list = sieve(n, print_console = False)
+    
     strong_gb_dict = {}
     for i in range(4, n+1, 2):
         j = 0
@@ -47,25 +53,39 @@ def strong_goldbach_dict(n):
             if (i - prime_list[j]) in prime_list:
                 strong_gb_dict[i] = strong_gb_dict.get(i,[]) + [(prime_list[j],i-prime_list[j])]
             j +=  1
+        if print_console:
+            print(i, strong_gb_dict[i])
                     
     return strong_gb_dict
 
-def goldbach_partition_count(n):
-    gb_dict = strong_goldbach_dict(n)
-    count_list =[]
-    for i in range(4, n+1, 2):  
-        count_list.append((i, len(gb_dict[i])))
+def strong_goldbach_partition_count(n, print_console = True):
     
-    return count_list
+    prime_list = sieve(n, print_console = False)
+    
+    count_dict ={}
+    for i in range (4, n + 1, 2):
+        temp = 0
+        j = 0
+        while prime_list[j] <= i/2:
+            if (i - prime_list[j]) in prime_list:
+                count_dict[i] = count_dict.get(i, temp) + 1
+            j += 1
+        
+        if print_console:
+            print("{}: {} partitions".format(i, count_dict[i]))
+    
+    return count_dict
 
 def plot_strong_gb_mod_3(n):
 
     import matplotlib.pyplot as plt
     import pandas as pd
     from drawnow import drawnow
-
-    prime_list = sieve(n)
-
+    
+    count_dict = strong_goldbach_partition_count(n)
+    
+    # prime_list = sieve(n)
+    
     mod_0 = []
     mod_0_p = []
     mod_1 = []
@@ -77,18 +97,17 @@ def plot_strong_gb_mod_3(n):
 
     # Function to plot Goldbach partitions for drawnow()
     def makeFig():
-        plt.plot(mod_0, mod_0_p, 'r.')
-        plt.plot(mod_1, mod_1_p, 'y.')
-        plt.plot(mod_2, mod_2_p, 'b.')
-
+        plt.plot(mod_0, mod_0_p, 'r.', label = 'mod 0')
+        plt.plot(mod_1, mod_1_p, 'y.', label = 'mod 1')
+        plt.plot(mod_2, mod_2_p, 'b.', label = 'mod 2')
+        
+        plt.legend(loc = 'best')
+        plt.xlabel("Even numbers")
+        plt.ylabel("Number of partitions")
+        plt.title("Goldbach's Comet of residue class of 3 up to {}".format(n))
+        
     for i in range (4, n + 1, 2):
-        temp = 0
-        j = 0
-        while prime_list[j] <= i/2:
-            if (i - prime_list[j]) in prime_list:
-                temp += 1
-            j += 1
-        print(i,temp)
+        temp = count_dict[i]
         
         if i%3 == 0:
             mod_0.append(i)
@@ -102,7 +121,9 @@ def plot_strong_gb_mod_3(n):
         
         drawnow(makeFig)
         plt.pause(.0001)
-    
+        
+    plt.show(block = True)
+        
 def main():
     
     n = 0
@@ -131,11 +152,12 @@ def main():
     
     def run(case):
         if case == 1:
-            print(sieve(n))
+            print("The prime numbers up to {}:".format(n))
+            sieve(n)
         elif case == 2:
-            print(strong_goldbach_dict)
+            strong_goldbach_pair(n)
         elif case == 3:
-            print(goldbach_partition_count)
+            strong_goldbach_partition_count(n)
         elif case == 4:
             plot_strong_gb_mod_3(n)
             
