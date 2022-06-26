@@ -146,6 +146,8 @@ def weak_goldbach_partition_count(n, print_console = True):
     return count_dict
 
 def plot_weak_gb(n):
+    
+    # Import necessary libraries
     import matplotlib.pyplot as plt
     import pandas as pd
     from drawnow import drawnow
@@ -168,17 +170,19 @@ def plot_weak_gb(n):
         plt.pause(0.0001)
         
     plt.show(block = True)
-    
+   
+# Function to plot the number of Goldbach's strong conjecture partitions agains their corresponding even numbers in residue classes of 3
 def plot_strong_gb_mod_3(n):
 
+    # Import necessary libraries
     import matplotlib.pyplot as plt
     import pandas as pd
     from drawnow import drawnow
     
+    # Compute the number of Goldbach's strong conjecture partitions before plotting
     count_dict = strong_goldbach_partition_count(n)
     
-    # prime_list = sieve(n)
-    
+    # Empty list to store multiple residue classes of 3
     r_0 = []
     r_0_p = []
     r_1 = []
@@ -186,22 +190,27 @@ def plot_strong_gb_mod_3(n):
     r_2 = []
     r_2_p = []
 
+    # Enable interactive mode.
     plt.ion()
 
-    # Function to plot Goldbach partitions for drawnow()
+    # Function to plot Goldbach's strong conjecture partitions
     def makeFig():
-        plt.plot(r_0, r_0_p, 'r.', label = 'r 0')
-        plt.plot(r_1, r_1_p, 'y.', label = 'r 1')
-        plt.plot(r_2, r_2_p, 'b.', label = 'r 2')
         
+        # Plot different residue classes of 3 in different colors
+        plt.plot(r_0, r_0_p, 'r.', label = '0 mod 3')
+        plt.plot(r_1, r_1_p, 'y.', label = '1 mod 3')
+        plt.plot(r_2, r_2_p, 'b.', label = '2 mod 3')
+        
+        # Labels of the plot
         plt.legend(loc = 'best')
         plt.xlabel("Even numbers")
         plt.ylabel("Number of partitions")
-        plt.title("Goldbach's strong conjecture partitions of residue class of 3 up to {}".format(n))
+        plt.title("Goldbach's strong conjecture partitions of multiple residue classes of 3 up to {}".format(n))
         
     for i in range (4, n + 1, 2):
         temp = count_dict[i]
         
+        # Store computed values
         if i%3 == 0:
             r_0.append(i)
             r_0_p.append(temp)
@@ -212,6 +221,7 @@ def plot_strong_gb_mod_3(n):
             r_2.append(i)
             r_2_p.append(temp)
         
+        # To graph dynamically
         drawnow(makeFig)
         plt.pause(.0001)
         
@@ -219,10 +229,13 @@ def plot_strong_gb_mod_3(n):
            
 def main():
 
+    # To take and check valid input upper bound number
     while True:
         n = int(input("Note: For Goldbach's weak conjecture computing, an upper bound input number must be greater than or equal to 9\nEnter upper bound number(Enter -1 to quit): "))
+        # To stop the program
         if n == -1:
             break
+        # To check valid upper bound number n; n must be greater than or equal to 4
         try:
             if n < 4:
                 raise ValueError
@@ -231,8 +244,12 @@ def main():
         except ValueError:
             print("Invalid input number!")
     
-    valid = False
+    # Create condition check to run the program
+    valid_run = False
+    
+    # To take and check valid input option
     while n >= 4:
+        # Print available options
         print("\nAvailable options:\n"
               +"\tCompute Prime lists (1)\n"
               +"\tCompute Goldbach's strong conjecture pairs (2)\n" 
@@ -243,26 +260,33 @@ def main():
               + "\tPlot Goldbach's weak conjecture partitions (7)\n"
               + "\tQuit (-1)\n")
         
+        # To take input option
         case = int(input("Enter option: "))
+        # To stop the program
         if case == -1:
             break
+        # To check valid options 
         elif case not in range (1,8):
             print("Invalid input option!")
         elif case in range(1,8):
-            valid = True
+            valid_run = True
             break
     
+    # Function to check valid input number for Goldbach's weak conjecture
     def weak_gb_valid_run(n, func):
         try:
+            # Valid upper bound number must be greater than or equal to 9
             if n < 9:
                 raise ValueError  
             else:    
                 func(n)
         except ValueError:
             print("Invalid input number! Please re-enter upper bound number and available computing option the program!")
+            # Re-run the program when the input upper bound number is invalid
             main()
-        
-    def run(case):
+    
+    # Function to run available options    
+    def run(n, case):
         if case == 1:
             sieve(n)
         elif case == 2:
@@ -277,9 +301,10 @@ def main():
             plot_strong_gb_mod_3(n)
         elif case == 7:
             weak_gb_valid_run(n, plot_weak_gb)
-            
-    if valid:
-        run(case)
+    
+    # To run the program based on input option        
+    if valid_run:
+        run(n, case)
         
 if __name__ == "__main__":
     main()
