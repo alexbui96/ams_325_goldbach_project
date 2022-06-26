@@ -87,17 +87,18 @@ def weak_goldbach_pair(n, print_console = True):
         for num1 in prime_list:
             if num1 > n/3:
                 break
-            for num2 in prime_list:
-                if num2 < num1:
-                    continue
-                else:
-                    num3 = num - num1 - num2
-                    if num3 < num2:
+            else:
+                for num2 in prime_list:
+                    if num2 < num1:
                         continue
                     else:
-                        if num3 in prime_list:
-                            weak_gb_dict[num] = weak_gb_dict.get(num, []) + [(num1, num2, num3)]
-                        continue
+                        num3 = num - num1 - num2
+                        if num3 < num2:
+                            continue
+                        else:
+                            if num3 in prime_list:
+                                weak_gb_dict[num] = weak_gb_dict.get(num, []) + [(num1, num2, num3)]
+                            continue
         if print_console:
             print(num, weak_gb_dict[num])
     
