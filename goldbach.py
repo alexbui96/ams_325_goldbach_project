@@ -76,6 +76,86 @@ def strong_goldbach_partition_count(n, print_console = True):
     
     return count_dict
 
+def weak_goldbach_pair(n, print_console = True):
+    # Create a prime list up to n
+    prime_list = sieve(n, print_console = False)
+    prime_list.remove(2)
+    
+    weak_gb_dict = {}
+    
+    for num in range(9, n+1, 2):
+        for num1 in prime_list:
+            if num1 > n/3:
+                break
+            for num2 in prime_list:
+                if num2 < num1:
+                    continue
+                else:
+                    num3 = num - num1 - num2
+                    if num3 < num2:
+                        continue
+                    else:
+                        if num3 in prime_list:
+                            weak_gb_dict[num] = weak_gb_dict.get(num, []) + [(num1, num2, num3)]
+                        continue
+        if print_console:
+            print(num, weak_gb_dict[num])
+    
+    return weak_gb_dict
+
+def weak_goldbach_partition_count(n, print_console = True):
+    
+    # Create a prime list up to n
+    prime_list = sieve(n, print_console = False)
+    prime_list.remove(2)
+    
+    count_dict = {}
+    
+    for num in range(9, n+1, 2):
+        for num1 in prime_list:
+            if num1 > n/3:
+                break
+            else:
+                for num2 in prime_list:
+                    if num2 < num1:
+                        continue
+                    else:
+                        num3 = num - num1 - num2
+                        if num3 < num2:
+                            continue
+                        else:
+                            if num3 in prime_list:
+                                count_dict[num] = count_dict.get(num, 0) + 1
+                            continue
+        if print_console:
+            print(num, count_dict[num])
+     
+    return count_dict
+
+def plot_weak_gb(n):
+    import matplotlib.pyplot as plt
+    import pandas as pd
+    from drawnow import drawnow
+    
+    count_dict = weak_goldbach_partition_count(n)
+    num = []
+    par = []
+    
+    def makeFig():
+        plt.plot(num, par, "+")
+        plt.xlabel("Odd numbers")
+        plt.ylabel("Number of partitions")
+        plt.title("Goldbach's weak conjecture partitions")
+        
+    for i in range(9, n + 1, 2):
+        num.append(i)
+        par.append(count_dict[i])
+        
+        drawnow(makeFig)
+        plt.pause(0.0001)
+        
+    plt.show(block = True)
+    
 def plot_strong_gb_mod_3(n):
 
     import matplotlib.pyplot as plt
@@ -86,38 +166,38 @@ def plot_strong_gb_mod_3(n):
     
     # prime_list = sieve(n)
     
-    mod_0 = []
-    mod_0_p = []
-    mod_1 = []
-    mod_1_p = []
-    mod_2 = []
-    mod_2_p = []
+    r_0 = []
+    r_0_p = []
+    r_1 = []
+    r_1_p = []
+    r_2 = []
+    r_2_p = []
 
     plt.ion()
 
     # Function to plot Goldbach partitions for drawnow()
     def makeFig():
-        plt.plot(mod_0, mod_0_p, 'r.', label = 'mod 0')
-        plt.plot(mod_1, mod_1_p, 'y.', label = 'mod 1')
-        plt.plot(mod_2, mod_2_p, 'b.', label = 'mod 2')
+        plt.plot(r_0, r_0_p, 'r.', label = 'r 0')
+        plt.plot(r_1, r_1_p, 'y.', label = 'r 1')
+        plt.plot(r_2, r_2_p, 'b.', label = 'r 2')
         
         plt.legend(loc = 'best')
         plt.xlabel("Even numbers")
         plt.ylabel("Number of partitions")
-        plt.title("Goldbach's Comet of residue class of 3 up to {}".format(n))
+        plt.title("Goldbach's strong conjecture partitions of residue class of 3 up to {}".format(n))
         
     for i in range (4, n + 1, 2):
         temp = count_dict[i]
         
         if i%3 == 0:
-            mod_0.append(i)
-            mod_0_p.append(temp)
+            r_0.append(i)
+            r_0_p.append(temp)
         elif i%3 == 1:
-            mod_1.append(i)
-            mod_1_p.append(temp)
+            r_1.append(i)
+            r_1_p.append(temp)
         else:
-            mod_2.append(i)
-            mod_2_p.append(temp)
+            r_2.append(i)
+            r_2_p.append(temp)
         
         drawnow(makeFig)
         plt.pause(.0001)
@@ -141,12 +221,22 @@ def main():
     
     valid = False
     while n >= 4:
-        case = int(input("Enter option (Enter -1 to quit): "))
+        print("\nAvailable options:\n"
+              +"\tCompute Prime lists (1)\n"
+              +"\tCompute Goldbach's strong conjecture pairs (2)\n" 
+              + "\tCompute Goldbach partitions (3)\n"
+              + "\tCompute Goldbach's weak conjecture pairs (4)\n"
+              + "\tCompute Goldbach's weak conjecture partitions (5)\n"
+              + "\tPlot Goldbach's strong conjecture partitions (6)\n"
+              + "\tPlot Goldbach's weak conjecture partitions (7)\n"
+              + "\tQuit (-1)\n")
+        
+        case = int(input("Enter option: "))
         if case == -1:
             break
-        elif case not in range (1,5):
+        elif case not in range (1,8):
             print("Invalid input!")
-        elif case in range(1,5):
+        elif case in range(1,8):
             valid = True
             break
     
@@ -159,7 +249,13 @@ def main():
         elif case == 3:
             strong_goldbach_partition_count(n)
         elif case == 4:
+            weak_goldbach_pair(n)
+        elif case == 5:
+            weak_goldbach_partition_count(n)
+        elif case == 6:
             plot_strong_gb_mod_3(n)
+        elif case == 7:
+            plot_weak_gb(n)
             
     if valid:
         run(case)
