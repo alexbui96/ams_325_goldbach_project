@@ -6,6 +6,7 @@ from sympy import elliptic_f
 
 
 def sieve(n, print_console = True):
+    print("The prime numbers up to {}:".format(n))
     # Create a n-element True array (tempurary prime list)
     prime_list_temp = [True for i in range(n+1)]
     
@@ -43,6 +44,8 @@ def sieve(n, print_console = True):
 # The keys are even numbers up to n
 # Their corresponding values are Goldbach pairs
 def strong_goldbach_pair(n, print_console = True):
+    
+    print("The Goldbach's strong conjecture pairs up to {}:".format(n))
     # Create a prime list up to n
     prime_list = sieve(n, print_console = False)
     
@@ -59,7 +62,7 @@ def strong_goldbach_pair(n, print_console = True):
     return strong_gb_dict
 
 def strong_goldbach_partition_count(n, print_console = True):
-    
+    print("The number of Goldbach's strong conjecture partitions up to {}:".format(n))
     prime_list = sieve(n, print_console = False)
     
     count_dict ={}
@@ -76,19 +79,26 @@ def strong_goldbach_partition_count(n, print_console = True):
     
     return count_dict
 
+# Function to compute weak goldbach pairs and create a weak goldbach pairs dict
+# The keys are odd number from 9
+
 def weak_goldbach_pair(n, print_console = True):
+    print("The Goldbach's weak conjecture pairs up to {}:".format(n))
     # Create a prime list up to n
     prime_list = sieve(n, print_console = False)
+    # Remove 2 since 2 is even prime number
     prime_list.remove(2)
     
+    # Create empty dict to store weak goldbach pairs
     weak_gb_dict = {}
     
     for num in range(9, n+1, 2):
         for num1 in prime_list:
+            # Stop computing if the first number in pair greater than n/3
             if num1 > n/3:
                 break
-            else:
-                for num2 in prime_list:
+            
+            for num2 in prime_list:
                     if num2 < num1:
                         continue
                     else:
@@ -99,13 +109,14 @@ def weak_goldbach_pair(n, print_console = True):
                             if num3 in prime_list:
                                 weak_gb_dict[num] = weak_gb_dict.get(num, []) + [(num1, num2, num3)]
                             continue
+                
         if print_console:
             print(num, weak_gb_dict[num])
     
     return weak_gb_dict
 
 def weak_goldbach_partition_count(n, print_console = True):
-    
+    print("The number of Goldbach's weak conjecture partitions up to {}:".format(n))
     # Create a prime list up to n
     prime_list = sieve(n, print_console = False)
     prime_list.remove(2)
@@ -116,8 +127,8 @@ def weak_goldbach_partition_count(n, print_console = True):
         for num1 in prime_list:
             if num1 > n/3:
                 break
-            else:
-                for num2 in prime_list:
+            
+            for num2 in prime_list:
                     if num2 < num1:
                         continue
                     else:
@@ -128,6 +139,7 @@ def weak_goldbach_partition_count(n, print_console = True):
                             if num3 in prime_list:
                                 count_dict[num] = count_dict.get(num, 0) + 1
                             continue
+                
         if print_console:
             print(num, count_dict[num])
      
@@ -204,12 +216,11 @@ def plot_strong_gb_mod_3(n):
         plt.pause(.0001)
         
     plt.show(block = True)
-        
+           
 def main():
-    
-    n = 0
-    while n != -1:
-        n = int(input("Enter upper bound number(Enter -1 to quit): "))
+
+    while True:
+        n = int(input("Note: For Goldbach's weak conjecture computing, an upper bound input number must be greater than or equal to 9\nEnter upper bound number(Enter -1 to quit): "))
         if n == -1:
             break
         try:
@@ -236,27 +247,36 @@ def main():
         if case == -1:
             break
         elif case not in range (1,8):
-            print("Invalid input!")
+            print("Invalid input option!")
         elif case in range(1,8):
             valid = True
             break
     
+    def weak_gb_valid_run(n, func):
+        try:
+            if n < 9:
+                raise ValueError  
+            else:    
+                func(n)
+        except ValueError:
+            print("Invalid input number! Please re-enter upper bound number and available computing option the program!")
+            main()
+        
     def run(case):
         if case == 1:
-            print("The prime numbers up to {}:".format(n))
             sieve(n)
         elif case == 2:
             strong_goldbach_pair(n)
         elif case == 3:
             strong_goldbach_partition_count(n)
         elif case == 4:
-            weak_goldbach_pair(n)
+            weak_gb_valid_run(n, weak_goldbach_pair)  
         elif case == 5:
-            weak_goldbach_partition_count(n)
+            weak_gb_valid_run(n, weak_goldbach_partition_count)
         elif case == 6:
             plot_strong_gb_mod_3(n)
         elif case == 7:
-            plot_weak_gb(n)
+            weak_gb_valid_run(n, plot_weak_gb)
             
     if valid:
         run(case)
