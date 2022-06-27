@@ -97,7 +97,6 @@ def weak_goldbach_pair(n, print_console = True):
             # Stop computing if the first number in pair greater than n/3
             if num1 > n/3:
                 break
-            
             for num2 in prime_list:
                     if num2 < num1:
                         continue
@@ -145,6 +144,7 @@ def weak_goldbach_partition_count(n, print_console = True):
      
     return count_dict
 
+# Function to plot the number of Goldbach's weak conjecture partitions agains their corresponding odd numbers
 def plot_weak_gb(n):
     
     # Import necessary libraries
@@ -152,23 +152,30 @@ def plot_weak_gb(n):
     import pandas as pd
     from drawnow import drawnow
     
+    # Compute the number of Goldbach's weak conjecture partitions before plotting
     count_dict = weak_goldbach_partition_count(n)
+    
+    # Empty list to store odd numbers and their corresponding Goldbach's weak conjecture partitions  
     num = []
     par = []
     
+    # Function to plot Goldbach's weak conjecture partitions
     def makeFig():
         plt.plot(num, par, "+")
         plt.xlabel("Odd numbers")
         plt.ylabel("Number of partitions")
         plt.title("Goldbach's weak conjecture partitions")
-        
+    
+    # Store computed values    
     for i in range(9, n + 1, 2):
         num.append(i)
         par.append(count_dict[i])
         
+        # To plot dynamically
         drawnow(makeFig)
         plt.pause(0.0001)
-        
+    
+    # Keep the plot open    
     plt.show(block = True)
    
 # Function to plot the number of Goldbach's strong conjecture partitions agains their corresponding even numbers in residue classes of 3
@@ -206,11 +213,11 @@ def plot_strong_gb_mod_3(n):
         plt.xlabel("Even numbers")
         plt.ylabel("Number of partitions")
         plt.title("Goldbach's strong conjecture partitions of multiple residue classes of 3 up to {}".format(n))
-        
+    
+    # Store computed values    
     for i in range (4, n + 1, 2):
         temp = count_dict[i]
         
-        # Store computed values
         if i%3 == 0:
             r_0.append(i)
             r_0_p.append(temp)
@@ -224,7 +231,8 @@ def plot_strong_gb_mod_3(n):
         # To graph dynamically
         drawnow(makeFig)
         plt.pause(.0001)
-        
+    
+    # Keep the plot open   
     plt.show(block = True)
            
 def main():
