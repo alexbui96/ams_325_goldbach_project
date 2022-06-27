@@ -1,10 +1,4 @@
 # Function to generate prime numbers list up to n using sieve method
-from cProfile import label
-from re import T
-from numpy import block
-from sympy import elliptic_f
-
-
 def sieve(n, print_console = True):
     print("The prime numbers up to {}:".format(n))
     # Create a n-element True array (tempurary prime list)
@@ -49,7 +43,9 @@ def strong_goldbach_pair(n, print_console = True):
     # Create a prime list up to n
     prime_list = sieve(n, print_console = False)
     
+    # Empty dict to store Goldbach's strong conjecture pairs
     strong_gb_dict = {}
+    
     for i in range(4, n+1, 2):
         j = 0
         while prime_list[j] <= i/2:
@@ -89,26 +85,30 @@ def weak_goldbach_pair(n, print_console = True):
     # Remove 2 since 2 is even prime number
     prime_list.remove(2)
     
-    # Create empty dict to store weak goldbach pairs
+    # Empty dict to store weak goldbach pairs
     weak_gb_dict = {}
     
     for num in range(9, n+1, 2):
         for num1 in prime_list:
-            # Stop computing if the first number in pair greater than n/3
+            # Stop computing if the first number in the pair greater than n/3
             if num1 > n/3:
                 break
             for num2 in prime_list:
+                    # The second number in the pair must be greater than or equal to the first number
                     if num2 < num1:
                         continue
                     else:
+                        # Compute the last number in a pair
                         num3 = num - num1 - num2
+                        # The third number in the pair must be greater than or equal to the second number
                         if num3 < num2:
                             continue
                         else:
+                            # Check if the third number is prime
                             if num3 in prime_list:
                                 weak_gb_dict[num] = weak_gb_dict.get(num, []) + [(num1, num2, num3)]
                             continue
-                
+        # Print result to console        
         if print_console:
             print(num, weak_gb_dict[num])
     
@@ -138,7 +138,7 @@ def weak_goldbach_partition_count(n, print_console = True):
                             if num3 in prime_list:
                                 count_dict[num] = count_dict.get(num, 0) + 1
                             continue
-                
+        # Print result to console        
         if print_console:
             print(num, count_dict[num])
      
