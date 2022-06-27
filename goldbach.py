@@ -104,7 +104,7 @@ def strong_goldbach_partition_count(n, print_console = True, save_csv = True):
 
         # Print result to console
         if print_console:
-            print("{}: {} partitions".format(i, count_dict[i]))
+            print("{}: {} partitions".format(num, count_dict[num]))
 
     # Save outputs to csv    
     if save_csv:
