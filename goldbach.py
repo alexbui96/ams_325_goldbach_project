@@ -1,4 +1,7 @@
 # Function to generate prime numbers list up to n using sieve method
+from pandas import array
+
+
 def sieve(n, print_console = True):
     print("The prime numbers up to {}:".format(n))
     # Create a n-element True array (tempurary prime list)
@@ -34,6 +37,14 @@ def sieve(n, print_console = True):
                 print(prime)
     return prime_list
 
+def to_csv(file_name, headers, dict):
+    import csv
+    with open(file_name + ".csv", 'w', newline= '') as file:
+        w = csv.writer(file)
+        w.writerow(headers)
+        for num in dict.keys():
+            w.writerow([num, dict[num]])    
+
 # Function to create a dictionary for Goldbach's conjecture
 # The keys are even numbers up to n
 # Their corresponding values are Goldbach's strong conjecture pairs
@@ -57,7 +68,7 @@ def strong_goldbach_pair(n, print_console = True):
                     
     return strong_gb_dict
 
-def strong_goldbach_partition_count(n, print_console = True):
+def strong_goldbach_partition_count(n, print_console = True, save_csv = True):
     print("The number of Goldbach's strong conjecture partitions up to {}:".format(n))
     prime_list = sieve(n, print_console = False)
     
@@ -72,7 +83,10 @@ def strong_goldbach_partition_count(n, print_console = True):
         
         if print_console:
             print("{}: {} partitions".format(i, count_dict[i]))
-    
+        
+    if save_csv:
+        to_csv("strong_goldbach_partition_count_up_to_{}".format(n), ['Even number', 'Number of partitions'], count_dict)
+                
     return count_dict
 
 # Function to compute weak goldbach pairs and create a weak goldbach pairs dict
@@ -114,7 +128,7 @@ def weak_goldbach_pair(n, print_console = True):
     
     return weak_gb_dict
 
-def weak_goldbach_partition_count(n, print_console = True):
+def weak_goldbach_partition_count(n, print_console = True, save_csv = True):
     print("The number of Goldbach's weak conjecture partitions up to {}:".format(n))
     # Create a prime list up to n
     prime_list = sieve(n, print_console = False)
@@ -142,11 +156,14 @@ def weak_goldbach_partition_count(n, print_console = True):
         # Print result to console        
         if print_console:
             print(num, count_dict[num])
+    
+    if save_csv:
+        to_csv("weak_goldbach_partition_count_up_to_{}".format(n), ['Odd number', 'Number of partitions'], count_dict)
      
     return count_dict
 
 # Function to plot the number of Goldbach's weak conjecture partitions agains their corresponding odd numbers
-def plot_weak_gb(n, save = True):
+def plot_weak_gb(n, save_plot = True):
     
     # Import necessary libraries
     import matplotlib.pyplot as plt
@@ -154,7 +171,7 @@ def plot_weak_gb(n, save = True):
     from drawnow import drawnow
     
     # Compute the number of Goldbach's weak conjecture partitions before plotting
-    count_dict = weak_goldbach_partition_count(n)
+    count_dict = weak_goldbach_partition_count(n, save_csv = False)
     
     # Empty list to store odd numbers and their corresponding Goldbach's weak conjecture partitions  
     num = []
@@ -167,7 +184,7 @@ def plot_weak_gb(n, save = True):
         plt.ylabel("Number of partitions")
         plt.title("Goldbach's weak conjecture partitions up to {}".format(n))
         # Save the plot
-        if save:
+        if save_plot:
             plt.savefig("gb_weak_conjecture_{}.png".format(n))
     
     # Store computed values    
@@ -183,7 +200,7 @@ def plot_weak_gb(n, save = True):
     plt.show(block = True)
    
 # Function to plot the number of Goldbach's strong conjecture partitions agains their corresponding even numbers in residue classes of 3
-def plot_strong_gb_mod_3(n, save = True):
+def plot_strong_gb_mod_3(n, save_plot = True):
     
     # Import necessary libraries
     import matplotlib.pyplot as plt
@@ -191,7 +208,7 @@ def plot_strong_gb_mod_3(n, save = True):
     from drawnow import drawnow
     
     # Compute the number of Goldbach's strong conjecture partitions before plotting
-    count_dict = strong_goldbach_partition_count(n)
+    count_dict = strong_goldbach_partition_count(n, save_csv = False)
     
     # Empty list to store multiple residue classes of 3
     r_0 = []
@@ -218,7 +235,7 @@ def plot_strong_gb_mod_3(n, save = True):
         plt.ylabel("Number of partitions")
         plt.title("Goldbach's strong conjecture partitions of multiple residue classes of 3 up to {}".format(n))
         # Save the plot
-        if save:
+        if save_plot:
             plt.savefig("gb_strong_conjecture_{}.png".format(n))
             
     # Store computed values    
