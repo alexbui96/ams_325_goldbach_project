@@ -3,7 +3,8 @@ from pandas import array
 
 
 def sieve(n, print_console = True):
-    print("The prime numbers up to {}:".format(n))
+    if print_console:
+        print("The prime numbers up to {}:".format(n))
     # Create a n-element True array (tempurary prime list)
     prime_list_temp = [True for i in range(n+1)]
     
@@ -49,8 +50,8 @@ def to_csv(file_name, headers, dict):
 # The keys are even numbers up to n
 # Their corresponding values are Goldbach's strong conjecture pairs
 def strong_goldbach_pair(n, print_console = True):
-    
-    print("The Goldbach's strong conjecture pairs up to {}:".format(n))
+    if print_console:
+        print("The Goldbach's strong conjecture pairs up to {}:".format(n))
     # Create a prime list up to n
     prime_list = sieve(n, print_console = False)
     
@@ -69,7 +70,8 @@ def strong_goldbach_pair(n, print_console = True):
     return strong_gb_dict
 
 def strong_goldbach_partition_count(n, print_console = True, save_csv = True):
-    print("The number of Goldbach's strong conjecture partitions up to {}:".format(n))
+    if print_console:
+        print("The number of Goldbach's strong conjecture partitions up to {}:".format(n))
     prime_list = sieve(n, print_console = False)
     
     count_dict ={}
@@ -93,7 +95,8 @@ def strong_goldbach_partition_count(n, print_console = True, save_csv = True):
 # The keys are odd number from 9
 # Their corresponding values are Goldbach's weak conjecture pairs
 def weak_goldbach_pair(n, print_console = True):
-    print("The Goldbach's weak conjecture pairs up to {}:".format(n))
+    if print_console:
+        print("The Goldbach's weak conjecture pairs up to {}:".format(n))
     # Create a prime list up to n
     prime_list = sieve(n, print_console = False)
     # Remove 2 since 2 is even prime number
@@ -120,6 +123,7 @@ def weak_goldbach_pair(n, print_console = True):
                         else:
                             # Check if the third number is prime
                             if num3 in prime_list:
+                                # Add the pair to dict
                                 weak_gb_dict[num] = weak_gb_dict.get(num, []) + [(num1, num2, num3)]
                             continue
         # Print result to console        
@@ -129,7 +133,8 @@ def weak_goldbach_pair(n, print_console = True):
     return weak_gb_dict
 
 def weak_goldbach_partition_count(n, print_console = True, save_csv = True):
-    print("The number of Goldbach's weak conjecture partitions up to {}:".format(n))
+    if print_console:
+        print("The number of Goldbach's weak conjecture partitions up to {}:".format(n))
     # Create a prime list up to n
     prime_list = sieve(n, print_console = False)
     prime_list.remove(2)
