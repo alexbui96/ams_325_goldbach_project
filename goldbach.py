@@ -36,7 +36,7 @@ def sieve(n, print_console = True):
 
 # Function to create a dictionary for Goldbach's conjecture
 # The keys are even numbers up to n
-# Their corresponding values are Goldbach pairs
+# Their corresponding values are Goldbach's strong conjecture pairs
 def strong_goldbach_pair(n, print_console = True):
     
     print("The Goldbach's strong conjecture pairs up to {}:".format(n))
@@ -77,7 +77,7 @@ def strong_goldbach_partition_count(n, print_console = True):
 
 # Function to compute weak goldbach pairs and create a weak goldbach pairs dict
 # The keys are odd number from 9
-
+# Their corresponding values are Goldbach's weak conjecture pairs
 def weak_goldbach_pair(n, print_console = True):
     print("The Goldbach's weak conjecture pairs up to {}:".format(n))
     # Create a prime list up to n
@@ -87,7 +87,7 @@ def weak_goldbach_pair(n, print_console = True):
     
     # Empty dict to store weak goldbach pairs
     weak_gb_dict = {}
-    
+    # Check odd numbers from 9 up to n
     for num in range(9, n+1, 2):
         for num1 in prime_list:
             # Stop computing if the first number in the pair greater than n/3
@@ -138,6 +138,7 @@ def weak_goldbach_partition_count(n, print_console = True):
                             if num3 in prime_list:
                                 count_dict[num] = count_dict.get(num, 0) + 1
                             continue
+        
         # Print result to console        
         if print_console:
             print(num, count_dict[num])
@@ -145,7 +146,7 @@ def weak_goldbach_partition_count(n, print_console = True):
     return count_dict
 
 # Function to plot the number of Goldbach's weak conjecture partitions agains their corresponding odd numbers
-def plot_weak_gb(n):
+def plot_weak_gb(n, save = True):
     
     # Import necessary libraries
     import matplotlib.pyplot as plt
@@ -164,7 +165,10 @@ def plot_weak_gb(n):
         plt.plot(num, par, "+")
         plt.xlabel("Odd numbers")
         plt.ylabel("Number of partitions")
-        plt.title("Goldbach's weak conjecture partitions")
+        plt.title("Goldbach's weak conjecture partitions up to {}".format(n))
+        # Save the plot
+        if save:
+            plt.savefig("gb_weak_conjecture_{}.png".format(n))
     
     # Store computed values    
     for i in range(9, n + 1, 2):
@@ -179,8 +183,8 @@ def plot_weak_gb(n):
     plt.show(block = True)
    
 # Function to plot the number of Goldbach's strong conjecture partitions agains their corresponding even numbers in residue classes of 3
-def plot_strong_gb_mod_3(n):
-
+def plot_strong_gb_mod_3(n, save = True):
+    
     # Import necessary libraries
     import matplotlib.pyplot as plt
     import pandas as pd
@@ -213,9 +217,13 @@ def plot_strong_gb_mod_3(n):
         plt.xlabel("Even numbers")
         plt.ylabel("Number of partitions")
         plt.title("Goldbach's strong conjecture partitions of multiple residue classes of 3 up to {}".format(n))
-    
+        # Save the plot
+        if save:
+            plt.savefig("gb_strong_conjecture_{}.png".format(n))
+            
     # Store computed values    
     for i in range (4, n + 1, 2):
+        
         temp = count_dict[i]
         
         if i%3 == 0:
@@ -234,12 +242,15 @@ def plot_strong_gb_mod_3(n):
     
     # Keep the plot open   
     plt.show(block = True)
-           
+    
+# Main function to run           
 def main():
 
     # To take and check valid input upper bound number
     while True:
+        
         n = int(input("Note: For Goldbach's weak conjecture computing, an upper bound input number must be greater than or equal to 9\nEnter upper bound number(Enter -1 to quit): "))
+        
         # To stop the program
         if n == -1:
             break
@@ -257,6 +268,7 @@ def main():
     
     # To take and check valid input option
     while n >= 4:
+        
         # Print available options
         print("\nAvailable options:\n"
               +"\tCompute Prime lists (1)\n"
@@ -270,6 +282,7 @@ def main():
         
         # To take input option
         case = int(input("Enter option: "))
+        
         # To stop the program
         if case == -1:
             break
@@ -282,6 +295,7 @@ def main():
     
     # Function to check valid input number for Goldbach's weak conjecture
     def weak_gb_valid_run(n, func):
+        
         try:
             # Valid upper bound number must be greater than or equal to 9
             if n < 9:
@@ -295,6 +309,7 @@ def main():
     
     # Function to run available options    
     def run(n, case):
+        
         if case == 1:
             sieve(n)
         elif case == 2:
