@@ -1,7 +1,4 @@
 # Function to generate prime numbers list up to n using sieve method
-from pandas import array
-
-
 def sieve(n, print_console = True):
     # Print title
     if print_console:
