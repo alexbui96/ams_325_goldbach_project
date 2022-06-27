@@ -3,8 +3,10 @@ from pandas import array
 
 
 def sieve(n, print_console = True):
+    # Print title
     if print_console:
         print("The prime numbers up to {}:".format(n))
+
     # Create a n-element True array (tempurary prime list)
     prime_list_temp = [True for i in range(n+1)]
     
@@ -38,11 +40,17 @@ def sieve(n, print_console = True):
                 print(prime)
     return prime_list
 
+# Function to save goldbach's strong and weak partitions count dict to csv
 def to_csv(file_name, headers, dict):
+    # Import library
     import csv
+
+    # Create a new or override the existing csv file
     with open(file_name + ".csv", 'w', newline= '') as file:
         w = csv.writer(file)
+        # Add headers
         w.writerow(headers)
+        # Write csv file
         for num in dict.keys():
             w.writerow([num, dict[num]])    
 
@@ -50,42 +58,58 @@ def to_csv(file_name, headers, dict):
 # The keys are even numbers up to n
 # Their corresponding values are Goldbach's strong conjecture pairs
 def strong_goldbach_pair(n, print_console = True):
+    # Print title
     if print_console:
         print("The Goldbach's strong conjecture pairs up to {}:".format(n))
+    
     # Create a prime list up to n
     prime_list = sieve(n, print_console = False)
     
     # Empty dict to store Goldbach's strong conjecture pairs
     strong_gb_dict = {}
     
-    for i in range(4, n+1, 2):
+    # Check even numbers from 4 to n
+    for num in range(4, n+1, 2):
         j = 0
-        while prime_list[j] <= i/2:
-            if (i - prime_list[j]) in prime_list:
-                strong_gb_dict[i] = strong_gb_dict.get(i,[]) + [(prime_list[j],i-prime_list[j])]
+        while prime_list[j] <= num/2:
+            if (num - prime_list[j]) in prime_list:
+                strong_gb_dict[num] = strong_gb_dict.get(num,[]) + [(prime_list[j],num-prime_list[j])]
             j +=  1
+        # Print result to console
         if print_console:
-            print(i, strong_gb_dict[i])
+            print(num, strong_gb_dict[num])
                     
     return strong_gb_dict
 
+# Function to count the number of Goldbach partitions for each even numbers
+# The keys are even numbers up to n
+# The values are the number of partitions of each even number
 def strong_goldbach_partition_count(n, print_console = True, save_csv = True):
+    # Print title
     if print_console:
         print("The number of Goldbach's strong conjecture partitions up to {}:".format(n))
+
+    # Compute the prime list
     prime_list = sieve(n, print_console = False)
     
+    # Empty dict to store outputs
     count_dict ={}
-    for i in range (4, n + 1, 2):
+
+    # Check even numbers up to n
+    for num in range (4, n + 1, 2):
         temp = 0
         j = 0
-        while prime_list[j] <= i/2:
-            if (i - prime_list[j]) in prime_list:
-                count_dict[i] = count_dict.get(i, temp) + 1
+        # Check prime numbers up to n/2
+        while prime_list[j] <= num/2:
+            if (num - prime_list[j]) in prime_list:
+                count_dict[num] = count_dict.get(num, temp) + 1
             j += 1
-        
+
+        # Print result to console
         if print_console:
             print("{}: {} partitions".format(i, count_dict[i]))
-        
+
+    # Save outputs to csv    
     if save_csv:
         to_csv("strong_goldbach_partition_count_up_to_{}".format(n), ['Even number', 'Number of partitions'], count_dict)
                 
@@ -95,6 +119,7 @@ def strong_goldbach_partition_count(n, print_console = True, save_csv = True):
 # The keys are odd number from 9
 # Their corresponding values are Goldbach's weak conjecture pairs
 def weak_goldbach_pair(n, print_console = True):
+    # Print title
     if print_console:
         print("The Goldbach's weak conjecture pairs up to {}:".format(n))
     # Create a prime list up to n
