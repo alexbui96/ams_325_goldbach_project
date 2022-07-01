@@ -304,7 +304,9 @@ def n_input(limit = 4):
         # To take and check valid input upper bound number
     while True:
             
-        n = input("Note: For Goldbach's weak conjecture computing, an upper bound input number must be greater than or equal to 9\nEnter upper bound number(Enter -1 to quit): ")
+        n = input("***Note:\n"
+                  + "\tFor Goldbach's strong conjecture computing, an upper bound input number must be greater than or equal to 4.\n" 
+                  + "\tFor Goldbach's weak conjecture computing, an upper bound input number must be greater than or equal to 9.\nEnter upper bound number(Enter -1 to quit): ")
         # To check valid upper bound number n; n must be greater than or equal to limit
         try:
             n = int(n)
