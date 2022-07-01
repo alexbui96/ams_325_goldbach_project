@@ -257,7 +257,6 @@ def plot_strong_gb_mod_3(n, save_plot = True):
     r_1_p = []
     r_2 = []
     r_2_p = []
-
     # Enable interactive mode.
     plt.ion()
 
@@ -277,22 +276,22 @@ def plot_strong_gb_mod_3(n, save_plot = True):
         # Save the plot
         if save_plot:
             plt.savefig("gb_strong_conjecture_{}.png".format(n))
-            
+        
     # Store computed values    
-    for i in range (4, n + 1, 2):
+    for num in range (4, n + 1, 2):
         
-        temp = count_dict[i]
+        temp = count_dict[num]
         
-        if i%3 == 0:
-            r_0.append(i)
+        if num%3 == 0:
+            r_0.append(num)
             r_0_p.append(temp)
-        elif i%3 == 1:
-            r_1.append(i)
+        elif num%3 == 1:
+            r_1.append(num)
             r_1_p.append(temp)
         else:
-            r_2.append(i)
+            r_2.append(num)
             r_2_p.append(temp)
-        
+          
         # To graph dynamically
         drawnow(makeFig)
         plt.pause(.0001)
@@ -352,7 +351,7 @@ def run_valid():
                 print("Invalid input option!")
                 continue
             
-            while case in (4, 5, 7):
+            while case in [4, 5, 7]:
                 try:
                     # Valid upper bound number must be greater than or equal to 9
                     if n == -1:
@@ -419,11 +418,12 @@ def main():
             try:
                 case = int(case)
                 
-                if case in (4, 5, 7) & (n < 9):
-                    raise ValueError
+                if case in [4, 5, 7]:
+                    if n < 9:
+                        raise ValueError
                 
             except ValueError:
-                print("Invalid input option! Please re-run the program!")
+                print("Invalid input or the upper bound number is less than 9 for the Goldbach's weak conjecture compute! Please re-run the program!")
                 break
             
             if case == -1:
@@ -434,7 +434,7 @@ def main():
         elif re_run == "n":
             re_run = input("Current upper bound is n = {}, test a different bound? (y/any other keys to exit): ". format(n))
             if re_run == "y":
-                if case in (4, 5, 7):
+                if case in [4, 5, 7]:
                     n, valid_n = n_input(limit = 9)  
                 else:
                     n, valid_n = n_input()
