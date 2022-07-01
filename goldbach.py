@@ -393,8 +393,8 @@ def run(n, valid_run, case):
         elif case == 6:
             plot_strong_gb_mod_3(n)
         elif case == 7:
-            plot_weak_gb(n)       
-                
+            plot_weak_gb(n)     
+                 
 # Main function to run           
 def main():
 
@@ -418,6 +418,10 @@ def main():
             
             try:
                 case = int(case)
+                
+                if case in (4, 5, 7) & (n < 9):
+                    raise ValueError
+                
             except ValueError:
                 print("Invalid input option! Please re-run the program!")
                 break
