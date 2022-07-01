@@ -432,7 +432,7 @@ def main():
                 continue
             
         elif re_run == "n":
-            re_run = input("Current upper bound is n = {}, test a different bound? (y/any other keys to exit): ". format(n))
+            re_run = input("Current upper bound is n = {}, test a different bound with same analysis option: {}? (y/any other keys to exit): ". format(n, case))
             if re_run == "y":
                 if case in [4, 5, 7]:
                     n, valid_n = n_input(limit = 9)  
