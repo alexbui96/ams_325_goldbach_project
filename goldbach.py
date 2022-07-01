@@ -441,7 +441,9 @@ def main():
                 else:
                     n, valid_n = n_input()
                                                                 
-                if not(valid_n) or n == -1:
+                if valid_n:
+                    continue
+                elif n == -1:
                     break   
             else: 
                 break
