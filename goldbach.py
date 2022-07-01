@@ -403,6 +403,7 @@ def main():
     while valid_run:
         run(n, valid_run, case)
         re_run = input("Test different analysis with same bound n = {}? (y/n/any other keys to exit): ". format(n))
+        
         if re_run == "y":
             case = input("\nAvailable options:\n"
             +"\tCompute Prime lists (1)\n"
@@ -433,7 +434,7 @@ def main():
                     n, valid_n = n_input(limit = 9)  
                 else:
                     n, valid_n = n_input()
-                                            
+                                                                
                 if not(valid_n) or n == -1:
                     break   
             else: 
