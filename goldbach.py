@@ -335,8 +335,8 @@ def run_valid():
             
             # Print available options
             print("\nAvailable options:\n"
-                +"\tCompute Prime lists (1)\n"
-                +"\tCompute Goldbach's strong conjecture pairs (2)\n" 
+                + "\tCompute Prime lists (1)\n"
+                + "\tCompute Goldbach's strong conjecture pairs (2)\n" 
                 + "\tCompute Goldbach's strong conjecture partitions (3)\n"
                 + "\tCompute Goldbach's weak conjecture pairs (4)\n"
                 + "\tCompute Goldbach's weak conjecture partitions (5)\n"
@@ -407,8 +407,8 @@ def main():
         
         if re_run == "y":
             case = input("\nAvailable options:\n"
-            +"\tCompute Prime lists (1)\n"
-            +"\tCompute Goldbach's strong conjecture pairs (2)\n" 
+            + "\tCompute Prime lists (1)\n"
+            + "\tCompute Goldbach's strong conjecture pairs (2)\n" 
             + "\tCompute Goldbach's strong conjecture partitions (3)\n"
             + "\tCompute Goldbach's weak conjecture pairs (4)\n"
             + "\tCompute Goldbach's weak conjecture partitions (5)\n"
