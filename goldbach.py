@@ -305,13 +305,14 @@ def n_input(limit = 4):
         # To take and check valid input upper bound number
     while True:
             
-        n = int(input("Note: For Goldbach's weak conjecture computing, an upper bound input number must be greater than or equal to 9\nEnter upper bound number(Enter -1 to quit): "))
-            
-        # To stop the program
-        if n == -1:               
-            break
+        n = input("Note: For Goldbach's weak conjecture computing, an upper bound input number must be greater than or equal to 9\nEnter upper bound number(Enter -1 to quit): ")
         # To check valid upper bound number n; n must be greater than or equal to limit
         try:
+            n = int(n)
+            
+            if n == -1:               
+                break
+            
             if n < limit:
                 raise ValueError
             else:
@@ -343,7 +344,13 @@ def run_valid():
                 + "\tQuit (-1)\n")
             
             # To take input option
-            case = int(input("Enter option: "))
+            case = input("Enter option: ")
+            
+            try:
+                case = int(case)
+            except ValueError:
+                print("Invalid input option!")
+                continue
             
             while case in (4, 5, 7):
                 try:
@@ -394,41 +401,45 @@ def main():
     n, valid_run, case = run_valid()
     
     while valid_run:
-        re_run = "y"
-        while re_run == "y":
-            run(n, valid_run, case)
-            re_run = input("Test different analysis with same bound n = {}? (y/n/any other keys to exit): ". format(n))
-            if re_run == "y":
-                case = int(input("\nAvailable options:\n"
-                +"\tCompute Prime lists (1)\n"
-                +"\tCompute Goldbach's strong conjecture pairs (2)\n" 
-                + "\tCompute Goldbach's strong conjecture partitions (3)\n"
-                + "\tCompute Goldbach's weak conjecture pairs (4)\n"
-                + "\tCompute Goldbach's weak conjecture partitions (5)\n"
-                + "\tPlot Goldbach's strong conjecture partitions (6)\n"
-                + "\tPlot Goldbach's weak conjecture partitions (7)\n"
-                + "\tQuit (any other keys)\n"
-                + "Enter available option: "))
-                
-                if case in range (1,8):
-                    continue
-                else:
-                    break
-                
-            elif re_run == "n":
-                re_run = input("Current upper bound is n = {}, test a different bound? (y/any other keys to exit): ". format(n))
-                if re_run == "y":
-                    if case in (4, 5, 7):
-                        n, valid_n = n_input(limit = 9)  
-                    else:
-                        n, valid_n = n_input()                        
-                    if not(valid_n):
-                        break   
-                else: 
-                    break
-            else:
+        run(n, valid_run, case)
+        re_run = input("Test different analysis with same bound n = {}? (y/n/any other keys to exit): ". format(n))
+        if re_run == "y":
+            case = input("\nAvailable options:\n"
+            +"\tCompute Prime lists (1)\n"
+            +"\tCompute Goldbach's strong conjecture pairs (2)\n" 
+            + "\tCompute Goldbach's strong conjecture partitions (3)\n"
+            + "\tCompute Goldbach's weak conjecture pairs (4)\n"
+            + "\tCompute Goldbach's weak conjecture partitions (5)\n"
+            + "\tPlot Goldbach's strong conjecture partitions (6)\n"
+            + "\tPlot Goldbach's weak conjecture partitions (7)\n"
+            + "\tQuit (-1)\n"
+            + "Enter available option: ")
+            
+            try:
+                case = int(case)
+            except ValueError:
+                print("Invalid input option! Please re-run the program!")
                 break
-        break
+            
+            if case == -1:
+                break
+            elif case in range (1,8):
+                continue
+            
+        elif re_run == "n":
+            re_run = input("Current upper bound is n = {}, test a different bound? (y/any other keys to exit): ". format(n))
+            if re_run == "y":
+                if case in (4, 5, 7):
+                    n, valid_n = n_input(limit = 9)  
+                else:
+                    n, valid_n = n_input()
+                                            
+                if not(valid_n) or n == -1:
+                    break   
+            else: 
+                break
+        else:
+            break
 
 if __name__ == "__main__":
     main()
