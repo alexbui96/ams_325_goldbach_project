@@ -171,15 +171,19 @@ def weak_goldbach_partition_count(n, print_console = True, save_csv = True):
 
     # Create a prime list up to n
     prime_list = sieve(n, print_console = False)
+    # Remove prime number 2
     prime_list.remove(2)
     
+    # Empty dict to store output
     count_dict = {}
     
     for num in range(9, n+1, 2):
+        # pair = (num1, num2, num3) with num1 <=  num2 <= num3
+        # First prime number in pair
         for num1 in prime_list:
+            # stop loop
             if num1 > n/3:
                 break
-            
             for num2 in prime_list:
                     if num2 < num1:
                         continue
@@ -298,10 +302,97 @@ def plot_strong_gb_mod_3(n, save_plot = True):
     
     # Keep the plot open   
     plt.show(block = True)
+    
+# Function to plot the number of Goldbach's strong conjecture partitions agains their corresponding even numbers in residue classes of 3
+def plot_strong_gb_mul_7(n, save_plot = True):
+    
+    # Import necessary libraries
+    import matplotlib.pyplot as plt
+    import pandas as pd
+    from drawnow import drawnow
+    
+    # Compute the number of Goldbach's strong conjecture partitions before plotting
+    count_dict = strong_goldbach_partition_count(n, save_csv = False)
+    
+    # Empty list to store different multiplication classes
+    m_3 = []
+    m_3_p = []
+    m_5 = []
+    m_5_p = []
+    m_7 = []
+    m_7_p = []
+    m_35 = []
+    m_35_p = []
+    m_37 = []
+    m_37_p = []
+    m_57 = []
+    m_57_p = []
+    m_357 = []
+    m_357_p = []
+    
+    # Enable interactive mode.
+    plt.ion()
 
+    # Function to plot Goldbach's strong conjecture partitions
+    def makeFig():
+        
+        # Plot different multiplication class in different colors
+        plt.plot(m_3, m_3_p, 'g.', label = 'Multiple of 3')
+        plt.plot(m_5, m_5_p, 'r.', label = 'Multiple of 5')
+        plt.plot(m_7, m_7_p, 'b.', label = 'Multiple of 7')
+        plt.plot(m_35, m_35_p, 'y.', label = 'Multiple of 3 and 5')
+        plt.plot(m_37, m_37_p, 'c.', label = 'Multiple of 3 and 7')
+        plt.plot(m_57, m_57_p, 'm.', label = 'Multiple of 5 and 7')
+        plt.plot(m_357, m_357_p, 'k.', label = 'Multiple of 3, 5 and 7')
+        
+        # Labels of the plot
+        plt.legend(loc = 'best')
+        plt.xlabel("Even numbers")
+        plt.ylabel("Number of partitions")
+        plt.title("Goldbach's strong conjecture partitions in different multiple classes up to {}".format(n))
+        # Save the plot
+        if save_plot:
+            plt.savefig("gb_strong_conjecture_{}.png".format(n))
+        
+    # Store computed values    
+    for num in range (4, n + 1, 2):
+        
+        temp = count_dict[num]
+        
+        if (num%3 == 0) & (num%5 == 0) & (num%7 == 0):
+            m_357.append(num)
+            m_357_p.append(temp)
+        elif (num%3 == 0) & (num%5 == 0) & (num%7 != 0):
+            m_35.append(num)
+            m_35_p.append(temp)
+        elif (num%3 == 0) & (num%5 != 0) & (num%7 == 0):
+            m_37.append(num)
+            m_37_p.append(temp)
+        elif (num%3 != 0) & (num%5 == 0) & (num%7 == 0):
+            m_57.append(num)
+            m_57_p.append(temp)
+        elif (num%3 == 0) & (num%5 != 0) & (num%7 != 0):
+            m_3.append(num)
+            m_3_p.append(temp)
+        elif (num%3 != 0) & (num%5 == 0) & (num%7 != 0):
+            m_5.append(num)
+            m_5_p.append(temp)
+        elif (num%3 != 0) & (num%5 != 0) & (num%7 == 0):
+            m_7.append(num)
+            m_7_p.append(temp)     
+          
+        # To graph dynamically
+        drawnow(makeFig)
+        plt.pause(.0001)
+    
+    # Keep the plot open   
+    plt.show(block = True)
+
+# Function to check valid uppper bound number
 def n_input(limit = 4):
     valid_n = False
-        # To take and check valid input upper bound number
+    # To take and check valid input upper bound number
+    # Run until valid input or exit the program
     while True:
             
         n = input("***Note:\n"
@@ -310,19 +401,24 @@ def n_input(limit = 4):
         # To check valid upper bound number n; n must be greater than or equal to limit
         try:
             n = int(n)
-            
+            # input -1 to exit
             if n == -1:               
                 break
-            
+            # default limit = 4 for general Goldbach computation, 9 for Goldbach's weak conjecture
             if n < limit:
+                # error for invalid input
                 raise ValueError
             else:
+                # run for valid input
                 valid_n = True
+                # stop loop
                 break
         except ValueError:
+            # error message
             print("Invalid input number!")
     return n, valid_n
-    
+
+# Function to check valid input options    
 def run_valid():
         n, valid_n = n_input()
         
@@ -340,27 +436,31 @@ def run_valid():
                 + "\tCompute Goldbach's strong conjecture partitions (3)\n"
                 + "\tCompute Goldbach's weak conjecture pairs (4)\n"
                 + "\tCompute Goldbach's weak conjecture partitions (5)\n"
-                + "\tPlot Goldbach's strong conjecture partitions (6)\n"
-                + "\tPlot Goldbach's weak conjecture partitions (7)\n"
+                + "\tPlot Goldbach's strong conjecture partitions residue class of 3 (6)\n"
+                +"\tPlot Goldbach's strong conjecture partitions in different multiplication classes (7)\n"
+                + "\tPlot Goldbach's weak conjecture partitions (8)\n"
                 + "\tQuit (-1)\n")
             
             # To take input option
             case = input("Enter option: ")
-            
+            # check numeric input
             try:
                 case = int(case)
             except ValueError:
                 print("Invalid input option!")
                 continue
             
-            while case in [4, 5, 7]:
+            # check valid upper bound number for Goldbach's weak conjecture computation
+            while case in [4, 5, 8]:
                 try:
                     # Valid upper bound number must be greater than or equal to 9
                     if n == -1:
                         break
                     elif n < 9:
+                        # error when n < 9
                         raise ValueError
                     else:
+                        # stop loop
                         break  
                 except ValueError:
                     print("Invalid input number for case option: {}".format(case))
@@ -370,14 +470,15 @@ def run_valid():
             # To stop the program
             if case == -1:
                 break
-            # To check valid options 
-            elif case not in range (1,8):
+            # To check valid input options 
+            elif case not in range (1,9):
                 print("Invalid input option!")
-            elif case in range(1,8):
+            elif case in range(1,9):
                 valid_run = True
                 break
         return n, valid_run, case
-
+    
+# Function to run analysis options
 def run(n, valid_run, case):
     # To run the program based on input option    
     if valid_run:
@@ -394,17 +495,21 @@ def run(n, valid_run, case):
         elif case == 6:
             plot_strong_gb_mod_3(n)
         elif case == 7:
+            plot_strong_gb_mul_7(n)
+        elif case == 8:
             plot_weak_gb(n)     
                  
 # Main function to run           
 def main():
-
+    # To take input of upper bound number and available options
     n, valid_run, case = run_valid()
     
+    # Run and re-run the program 
     while valid_run:
         run(n, valid_run, case)
         re_run = input("Test different analysis with same bound n = {}? (y/n/any other keys to exit): ". format(n))
         
+        # Different analysis with the same bound
         if re_run == "y":
             case = input("\nAvailable options:\n"
             + "\tCompute Prime lists (1)\n"
@@ -412,43 +517,53 @@ def main():
             + "\tCompute Goldbach's strong conjecture partitions (3)\n"
             + "\tCompute Goldbach's weak conjecture pairs (4)\n"
             + "\tCompute Goldbach's weak conjecture partitions (5)\n"
-            + "\tPlot Goldbach's strong conjecture partitions (6)\n"
-            + "\tPlot Goldbach's weak conjecture partitions (7)\n"
+            + "\tPlot Goldbach's strong conjecture partitions residue class of 3 (6)\n"
+            +"\tPlot Goldbach's strong conjecture partitions in different multiplication classes (7)\n"
+            + "\tPlot Goldbach's weak conjecture partitions (8)\n"
             + "\tQuit (-1)\n"
             + "Enter available option: ")
             
+            # check valid input options
             try:
                 case = int(case)
-                
-                if case in [4, 5, 7]:
+                # check bound number for weak conjecture computation
+                if case in [4, 5, 8]:
                     if n < 9:
                         raise ValueError
-                
+            # exit for invalid bound number  
             except ValueError:
-                print("Invalid input or the upper bound number is less than 9 for the Goldbach's weak conjecture compute! Please re-run the program!")
+                print("Invalid input or the upper bound number is less than 9 for the Goldbach's weak conjecture computation! Please re-run the program!")
                 break
-            
+            # exit
             if case == -1:
                 break
-            elif case in range (1,8):
+            # run if valid
+            elif case in range (1,9):
                 continue
-            
+         
+        # Different bound number with the same analysis  
         elif re_run == "n":
             re_run = input("Current upper bound is n = {}, test a different bound with same analysis option: {}? (y/any other keys to exit): ". format(n, case))
             if re_run == "y":
-                if case in [4, 5, 7]:
+                
+                if case in [4, 5, 8]:
+                    # take and check bound number for weak conjecture analysis
                     n, valid_n = n_input(limit = 9)  
                 else:
+                    # take bound number for genaral analysis
                     n, valid_n = n_input()
-                                                                
+                # run if valid                                                
                 if valid_n:
                     continue
+                # exit
                 elif n == -1:
-                    break   
+                    break
+            # exit for other input   
             else: 
                 break
+        # exit for other input
         else:
             break
-
+# to run
 if __name__ == "__main__":
     main()
