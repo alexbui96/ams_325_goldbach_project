@@ -279,7 +279,7 @@ def plot_strong_gb_mod_3(n, save_plot = True):
         plt.title("Goldbach's strong conjecture partitions of multiple residue classes of 3 up to {}".format(n))
         # Save the plot
         if save_plot:
-            plt.savefig("gb_strong_conjecture_{}.png".format(n))
+            plt.savefig("gb_strong_conjecture_mod_3_{}.png".format(n))
         
     # Store computed values    
     for num in range (4, n + 1, 2):
@@ -337,22 +337,22 @@ def plot_strong_gb_mul_7(n, save_plot = True):
     def makeFig():
         
         # Plot different multiplication class in different colors
-        plt.plot(m_3, m_3_p, 'g.', label = 'Multiple of 3')
-        plt.plot(m_5, m_5_p, 'r.', label = 'Multiple of 5')
-        plt.plot(m_7, m_7_p, 'b.', label = 'Multiple of 7')
-        plt.plot(m_35, m_35_p, 'y.', label = 'Multiple of 3 and 5')
-        plt.plot(m_37, m_37_p, 'c.', label = 'Multiple of 3 and 7')
-        plt.plot(m_57, m_57_p, 'm.', label = 'Multiple of 5 and 7')
-        plt.plot(m_357, m_357_p, 'k.', label = 'Multiple of 3, 5 and 7')
+        plt.plot(m_3, m_3_p, 'g.', label = 'Multiplication of 3')
+        plt.plot(m_5, m_5_p, 'r.', label = 'Multiplication of 5')
+        plt.plot(m_7, m_7_p, 'b.', label = 'Multiplication of 7')
+        plt.plot(m_35, m_35_p, 'y.', label = 'Multiplication of 3 and 5')
+        plt.plot(m_37, m_37_p, 'c.', label = 'Multiplication of 3 and 7')
+        plt.plot(m_57, m_57_p, 'm.', label = 'Multiplication of 5 and 7')
+        plt.plot(m_357, m_357_p, 'k.', label = 'Multiplication of 3, 5 and 7')
         
         # Labels of the plot
         plt.legend(loc = 'best')
         plt.xlabel("Even numbers")
         plt.ylabel("Number of partitions")
-        plt.title("Goldbach's strong conjecture partitions in different multiple classes up to {}".format(n))
+        plt.title("Goldbach's strong conjecture partitions in different multiplication classes up to {}".format(n))
         # Save the plot
         if save_plot:
-            plt.savefig("gb_strong_conjecture_{}.png".format(n))
+            plt.savefig("gb_strong_conjecture_mulplication_{}.png".format(n))
         
     # Store computed values    
     for num in range (4, n + 1, 2):
