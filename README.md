@@ -1,4 +1,4 @@
-# python_goldbach
+# ams_325_goldbach_project
 
 This is a python program to verify and analysis several areas of Goldbach's conjecture.
 
