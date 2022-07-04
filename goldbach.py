@@ -16,18 +16,16 @@ def sieve(n, print_console = True):
     prime_list_temp[1] = False
     
     # Find an estimate square root of n
-    for i in range(n):
-        res = i*i
-        # stop when reach 
-        if res > n:
+    for est_sq in range(n):
+        if est_sq*est_sq >= n:
             break
         
     # Assign True for primes and False for composites
-    for j in range(2, i):
-        if prime_list_temp[j]:
+    for prime in range(2, est_sq):
+        if prime_list_temp[prime]:
             # Assign False (not prime) for multiple of prime number
-            for m in range(j*j, n+1, j):
-                prime_list_temp[m] = False
+            for num in range(prime*prime, n+1, prime):
+                prime_list_temp[num] = False
     
     # Create prime number list based on True value in prime_list_temp
     for prime in range(n+1):
@@ -75,6 +73,12 @@ def strong_goldbach_pair(n, print_console = True):
             if (num - prime_list[j]) in prime_list:
                 strong_gb_dict[num] = strong_gb_dict.get(num,[]) + [(prime_list[j],num-prime_list[j])]
             j +=  1
+        
+        # exit and report Goldbach fail
+        if len(strong_gb_dict[num]) == 0:
+            print("{} has no partition.".format(num))
+            break
+         
         # Print result to console
         if print_console:
             print(num, strong_gb_dict[num])
@@ -105,7 +109,12 @@ def strong_goldbach_partition_count(n, print_console = True, save_csv = True):
                 # Count 1 if the other number is prime
                 count_dict[num] = count_dict.get(num, 0) + 1
             j += 1
-
+            
+        # exit and report Goldbach fail
+        if count_dict[num] == 0:
+            print("{} has no partition.".format(num))
+            break
+        
         # Print result to console
         if print_console:
             print("{}: {} partitions".format(num, count_dict[num]))
@@ -154,6 +163,11 @@ def weak_goldbach_pair(n, print_console = True):
                                 # Add the pair to dict
                                 weak_gb_dict[num] = weak_gb_dict.get(num, []) + [(num1, num2, num3)]
                             continue
+        # exit and report Goldbach fail
+        if len(weak_gb_dict[num]) == 0:
+            print("{} has no partition.".format(num))
+            break
+        
         # Print result to console        
         if print_console:
             print(num, weak_gb_dict[num])
@@ -195,6 +209,11 @@ def weak_goldbach_partition_count(n, print_console = True, save_csv = True):
                             if num3 in prime_list:
                                 count_dict[num] = count_dict.get(num, 0) + 1
                             continue
+        
+        # exit and report Goldbach fail
+        if count_dict[num] == 0:
+            print("{} has no partition.".format(num))
+            break
         
         # Print result to console        
         if print_console:
