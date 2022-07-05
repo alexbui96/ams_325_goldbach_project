@@ -57,8 +57,14 @@ def sympy_isprime(num):
     return end - start
 
 def main():
+    
+    lower = int(input("Enter lower boundary: "))
+    upper = int(input("Enter upper boundary: "))
+    step = int(input("Enter step: "))
+    
+    
     # list of n to run
-    num_list = [i for i in range(10000,100001, 10000)]
+    num_list = [i for i in range(lower,upper+1, step)]
     
     # empty list to store output
     n_list = []
