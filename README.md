@@ -2,7 +2,7 @@
 
 There are two python files in this project.
 
-The main project is goldbach.py, which has the main() function builtin.
+The main project is goldbach.py, which has the main() function builtin to run several analysis options.
 
 The second file is sieve_runtime.py to compare the running time between sieve and other functions in Python.
 
