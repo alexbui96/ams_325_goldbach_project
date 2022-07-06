@@ -47,7 +47,7 @@ def sympy_isprime(num):
     
     start = time.time()
     prime_list = []
-
+    # check every number up to n if it is prime
     for n in range (2, num+1):
         if isprime(n):
             prime_list.append(n)
@@ -58,6 +58,7 @@ def sympy_isprime(num):
 
 def main():
     
+    #take input
     lower = int(input("Enter lower boundary: "))
     upper = int(input("Enter upper boundary: "))
     step = int(input("Enter step: "))
@@ -71,6 +72,7 @@ def main():
     sieve_list = []
     isprime_list = []
     
+    # make plot function
     def makeFig():
         plt.plot(n_list, sieve_list , "r-", label = "Sieve method")
         plt.plot(n_list, isprime_list, "b-", label = "sympy.isprime()")

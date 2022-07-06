@@ -1,5 +1,11 @@
 # ams_325_goldbach_project
 
-This is a python program to verify and analysis several areas of Goldbach's conjecture.
+There are two python files in this project.
 
-This python file has built-in main function, it can be directly with Python interpeter.
+The main project is goldbach.py, which has the main() function builtin.
+
+The second file is sieve_runtime.py to compare the running time between sieve and other functions in Python.
+
+To run, just use the Python interpeter.
+
+In some analysis tasks, the results will be saved in the directory.
