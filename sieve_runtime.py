@@ -60,10 +60,8 @@ def sympy_isprime(num):
     for n in range (2, num+1):
         if isprime(n):
             prime_list.append(n)
-            ```
             # Print primes in console
-            print(m)
-            ```
+            # print(m)
     end = time.time()
     # print outputs
     print("Elapsed time for sympy.isprime() function: {}".format(end - start))
