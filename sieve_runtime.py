@@ -1,3 +1,8 @@
+'''
+This project shows how effeciency of using Sieve method to find list of prime up to n
+It only requires to check to the sqrt(n), instead of checking every single numbers up to n
+'''
+
 # useful libraries
 from cProfile import label
 import time
@@ -34,14 +39,18 @@ def sieve(n):
     for prime in range(n+1):
         if prime_list_temp[prime]:
             prime_list.append(prime)
+            # Print prime in console
             # print(prime)
     #time when the prime end
     end = time.time()
-
+    # print outputs
     print("Elapsed time for sieve method: {}".format(end - start))
     
     # time that the program take to run
     return end - start
+    
+    # return primes
+    # return prime_list
 
 def sympy_isprime(num):
     
@@ -51,10 +60,15 @@ def sympy_isprime(num):
     for n in range (2, num+1):
         if isprime(n):
             prime_list.append(n)
+            # Print primes in console
             # print(m)
     end = time.time()
+    # print outputs
     print("Elapsed time for sympy.isprime() function: {}".format(end - start))
     return end - start
+    
+    # return primes
+    # return prime_list
 
 def main():
     
@@ -81,13 +95,13 @@ def main():
         plt.ylabel("Elapsed time (seconds)")
         plt.title("Elapsed time comparision between Sieve method and sympy.isprime() function")
         # Save the plot
-        plt.savefig("elapsed_time_comparision.png")
+        plt.savefig("sieve_elapsed_time_comparision_{}.png".format(n))
             
     # Create and write output to csv file
     with open("sieve_run_time_comparision.csv", 'w', newline= '') as csvfile:
         w = csv.writer(csvfile)
         #header
-        w.writerow(['number', 'sieve', 'other_method'])
+        w.writerow(['number', 'sieve', 'sympy_ispirme'])
 
         # run multiple n
         for i in range(len(num_list)):
